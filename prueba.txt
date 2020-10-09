@@ -1,0 +1,3 @@
+int daniela = "fea";
+boolean danielaFea = true;
+int a = 5*6;
