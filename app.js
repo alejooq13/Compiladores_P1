@@ -7,9 +7,10 @@ function abrir(event){
             var lines = contenido.split('\n');
             document.getElementById('contenido').innerText = contenido;
             document.getElementById('resultado').innerText = "Revisa la consola";
-            for (let i = 0; i<lines.length; i++){
+            for (i = 0; i<lines.length; i++){
               linea = lines[i].split(" ")
-              console.log(comprobar(linea))
+              console.log(linea)
+              comprobar(linea)
             }
         }
         reader.readAsText(archivo);
@@ -274,6 +275,20 @@ function estadoS0(lista){
   return valor
 }
 */
+
+
+function estadoS0(lista){
+  let aux = new Node();
+  let valor;
+  aux = lista.peekNode();
+  let long = lista.length();
+  for(i=0; i<long; i++){
+    valor = aux.getValue();
+    aux = aux.getNext(); 
+  }
+  return valor
+}
+
  /***************************************************************************************************************** 
  * COMPROBAR QUE LA LINEA ESTÉ BIEN ESCRITA
 */
@@ -287,5 +302,7 @@ function comprobar(listaC){
   aux = aux.getNext()
   return convertirEnArray(aux)
   //return estadoS0(listaComp); 
+  //console.log(listaComp)
+  console.log(estadoS0(listaComp));
 }
 
