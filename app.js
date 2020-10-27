@@ -7,10 +7,9 @@ function abrir(event){
             var lines = contenido.split('\n');
             document.getElementById('contenido').innerText = contenido;
             document.getElementById('resultado').innerText = "Revisa la consola";
-            for (i = 0; i<lines.length; i++){
+            for (let i = 0; i<lines.length; i++){
               linea = lines[i].split(" ")
-              console.log(linea)
-              comprobar(linea)
+              console.log(comprobar(linea))
             }
         }
         reader.readAsText(archivo);
@@ -39,6 +38,10 @@ function Node (clase, value) {
 
   Node.prototype.getValue = function(){
     return this.value;
+  }
+
+  Node.prototype.getClass = function(){
+    return this.clase;
   }
 
   Node.prototype.getNext = function(){
@@ -112,6 +115,15 @@ function Node (clase, value) {
       return this.length(current.next, acum = acum + 1)
     }
     return acum
+  }
+
+  LinkedList.prototype.convertirEnArray = function(node){
+    let listaNueva
+    while(node=!null){
+      listaNueva.push(node.getValue())
+      node = node.getNext();
+    }
+    return listaNueva
   }
   
 /*********************************************************************************************
@@ -233,20 +245,35 @@ function verificarParentesis(r){
 
 /******************************************************************************************************************
  * ESTADOS
- */
+ 
 
 function estadoS0(lista){
   let aux = new Node();
-  let valor;
+  let valor, clase;
   aux = lista.peekNode();
   let long = lista.length();
   for(i=0; i<long; i++){
-    valor = aux.getValue();
-    aux = aux.getNext(); 
+    clase = aux.getClass()
+    switch (clase){
+      case "Tipo":
+        aux = aux.getNext();
+        if(variable.includes(aux.getValue())){
+          aux.getNext();
+          if(separador.includes(aux.getValue()) && aux.getValue()==";"){
+            if(aux.next==null){
+              break;
+            }else{
+              console.log("Error, luego de ; no deben haber caracteres")
+            }
+          }else if(separador.includes(aux.getValue()) && aux.getValue()==","){
+            estadoS0()
+          }
+        }
+    }
   }
   return valor
 }
-
+*/
  /***************************************************************************************************************** 
  * COMPROBAR QUE LA LINEA ESTÉ BIEN ESCRITA
 */
@@ -254,7 +281,11 @@ function estadoS0(lista){
 function comprobar(listaC){
   var listaComp = new LinkedList();
   listaComp = convertirLista(listaC);
-  //console.log(listaComp)
-  console.log(estadoS0(listaComp));
+  let aux = new Node();
+  aux = listaComp.peekNode();
+  aux = aux.getNext()
+  aux = aux.getNext()
+  return convertirEnArray(aux)
+  //return estadoS0(listaComp); 
 }
 
