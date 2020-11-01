@@ -1,26 +1,26 @@
 function abrir(event){
-    let archivo = event.target.files[0];
-    if(archivo){
-        let reader = new FileReader();
-        reader.onload = function(e){
-            let contenido = e.target.result;
-            var lines = contenido.split('\n');
-            document.getElementById('contenido').innerText = contenido;
-            document.getElementById('resultado').innerText = "Revisa la consola";
-            for (i = 0; i<lines.length; i++){
-              linea = lines[i].split(" ")
-              console.log(linea)
-              comprobar(linea)
-            }
-        }
-        reader.readAsText(archivo);
-    }else{
-        document.getElementById("mensaje").innerText = "No ha seleccionado archivo"
-    } 
+  let archivo = event.target.files[0];
+  if(archivo){
+      let reader = new FileReader();
+      reader.onload = function(e){
+          let contenido = e.target.result;
+          var lines = contenido.split('\n');
+          document.getElementById('contenido').innerText = contenido;
+          document.getElementById('resultado').innerText = "Revisa la consola";
+          for (let i = 0; i<lines.length; i++){
+            linea = lines[i].split(" ")
+            console.log(linea)
+            comprobar(linea)
+          }
+      }
+      reader.readAsText(archivo);
+  }else{
+      document.getElementById("mensaje").innerText = "No ha seleccionado archivo"
+  } 
 }
 
 window.addEventListener("load",()=>{
-    document.getElementById("loader").addEventListener("change",abrir)    
+  document.getElementById("loader").addEventListener("change",abrir)    
 })
 
 
@@ -28,143 +28,143 @@ window.addEventListener("load",()=>{
 // LISTAS
 
 function Node (clase, value) {
-    this.clase = clase
-    this.value = value
-    this.next = null
-  }
-  
-  function LinkedList() {
-    this.head = null
-  }
+  this.clase = clase
+  this.value = value
+  this.next = null
+}
 
-  Node.prototype.getValue = function(){
-    return this.value;
-  }
+function LinkedList() {
+  this.head = null
+}
 
-  Node.prototype.getClass = function(){
-    return this.clase;
-  }
+Node.prototype.getValue = function(){
+  return this.value;
+}
 
-  Node.prototype.getNext = function(){
-      return this.next;
+Node.prototype.getClass = function(){
+  return this.clase;
+}
+
+Node.prototype.getNext = function(){
+    return this.next;
+}
+
+LinkedList.prototype.append = function(clase,value, current = this.head){
+  if(this.head === null){
+    return this.head = new Node(clase,value)
   }
-  
-  LinkedList.prototype.append = function(clase,value, current = this.head){
-    if(this.head === null){
-      return this.head = new Node(clase,value)
-    }
-    if(current.next === null){
-      return current.next = new Node(clase,value)
-    }
-    this.append(clase,value, current.next)
+  if(current.next === null){
+    return current.next = new Node(clase,value)
   }
-  
-  LinkedList.prototype.prepend = function(clase,value){
-    if(this.head === null){
-      return this.head = new Node(clase,value)
-    }
-    let newNode = new Node(clase,value)
-    newNode.next = this.head
-    this.head = newNode
+  this.append(clase,value, current.next)
+}
+
+LinkedList.prototype.prepend = function(clase,value){
+  if(this.head === null){
+    return this.head = new Node(clase,value)
   }
-  
-  LinkedList.prototype.removeNode = function (value, current = this.head) {
-    if(this.head === null){ // no head
-      return false
-    }
-  
-    if (this.head.value === value){
-      return this.head = this.head.next
-    }
-  
-    if(current.next !== null){
-      if(current.next.value === value){
-        return current.next = current.next.next
-      }
-      this.removeNode(value, current.next)
-    }
-    return false // no match found
-  }
-  
-  LinkedList.prototype.findNode = function (value, current = this.head){
-    if(this.head === null) {
-      return false
-    }
-  
-    if (current !== null) {
-      if (current.value === value){
-        return true
-      } else {
-        return this.findNode(value, current.next)
-      }
-    }
+  let newNode = new Node(clase,value)
+  newNode.next = this.head
+  this.head = newNode
+}
+
+LinkedList.prototype.removeNode = function (value, current = this.head) {
+  if(this.head === null){ // no head
     return false
   }
-  
-  LinkedList.prototype.peekNode = function (value) {
-    if(this.head === null) {
-      return false
-    }
-    return this.head
-  }
-  
-  LinkedList.prototype.length = function (current = this.head, acum = 1) {
-    if(this.head === null){
-      return 0
-    }
-    if (current.next !== null){
-      return this.length(current.next, acum = acum + 1)
-    }
-    return acum
+
+  if (this.head.value === value){
+    return this.head = this.head.next
   }
 
-  LinkedList.prototype.convertirEnArray = function(node){
-    let listaNueva
-    while(node=!null){
-      listaNueva.push(node.getValue())
-      node = node.getNext();
+  if(current.next !== null){
+    if(current.next.value === value){
+      return current.next = current.next.next
     }
-    return listaNueva
+    this.removeNode(value, current.next)
   }
-  
+  return false // no match found
+}
+
+LinkedList.prototype.findNode = function (value, current = this.head){
+  if(this.head === null) {
+    return false
+  }
+
+  if (current !== null) {
+    if (current.value === value){
+      return true
+    } else {
+      return this.findNode(value, current.next)
+    }
+  }
+  return false
+}
+
+LinkedList.prototype.peekNode = function (value) {
+  if(this.head === null) {
+    return false
+  }
+  return this.head
+}
+
+LinkedList.prototype.length = function (current = this.head, acum = 1) {
+  if(this.head === null){
+    return 0
+  }
+  if (current.next !== null){
+    return this.length(current.next, acum = acum + 1)
+  }
+  return acum
+}
+
+LinkedList.prototype.convertirEnArray = function(node){
+  let listaNueva
+  while(node=!null){
+    listaNueva.push(node.getValue())
+    node = node.getNext();
+  }
+  return listaNueva
+}
+
 /*********************************************************************************************
- * CREACIÓN DE PILAS
- */
+* CREACIÓN DE PILAS
+*/
 
 class Stack {
-  constructor(){
-    this.stack = [];
-  }
-  
-  push(element){
-    this.stack.push(element);
-    return this.stack;
-  }
+constructor(){
+  this.stack = [];
+}
 
-  pop(){
-    return this.stack.pop();
-  }
+push(element){
+  this.stack.push(element);
+  return this.stack;
+}
 
-  peek(){
-    return this.stack[this.stack.length - 1];
-  }
+pop(){
+  return this.stack.pop();
+}
 
-  size(){
-    return this.stack.length;
+peek(){
+  return this.stack[this.stack.length - 1];
+}
+
+size(){
+  return this.stack.length;
+}
+isEmpty(){
+  if(this.stack.length == 0){
+    return true;
   }
-  isEmpty(){
-    if(this.stack.length == 0){
-      return true;
-    }
-  }
-  print(){
-    console.log(this.stack);
-  }
+}
+print(){
+  console.log(this.stack);
+}
 }
 
 /**********************************************************************************************
-  * COMPROBAR SI ES UN INT O UN FLOAT
- */
+* COMPROBAR SI ES UN INT O UN FLOAT
+*/
 
 function isInt(n){
   return Number(n) === n && n % 1 === 0;
@@ -176,9 +176,10 @@ function isFloat(n){
 
 
 /***************************************************************************************************
- * CONVERTIR LINEA DE TEXTO EN LISTA
- */
-//var r = ["int", "num2", "=",'"', "aguacate y lechuga",'"', ";"]
+* CONVERTIR LINEA DE TEXTO EN LISTA
+*/
+
+var r = ["int", "b",",", "c",";","a"];
 
 var tipo = ["char", "int", "float", "bit", "boolean"];
 var variable = new RegExp("^[0-9a-zA-Z]+$");
@@ -191,7 +192,7 @@ function convertirLista(r){
   for(i = 0; i < r.length; i++){
     if(tipo.includes(r[i])){
       lista.append("Tipo", r[i]);
-      console.log(Object.values(lista));
+      //console.log(Object.values(lista));
     }
     else if(variable.test(r[i])){
       lista.append("Variable", r[i]);
@@ -211,11 +212,12 @@ function convertirLista(r){
   }
   return lista;
 }
-//console.log(convertirLista(r));
+//let nueva = (convertirLista(r));
+//console.log(nueva);
 
 /******************************************************************************************************************
- * VERIFICAR PARENTESIS
- */
+* VERIFICAR PARENTESIS
+*/
 
 function verificarParentesis(r){
   const pila = new Stack();
@@ -245,64 +247,338 @@ function verificarParentesis(r){
 }
 
 /******************************************************************************************************************
- * ESTADOS
- 
-
-function estadoS0(lista){
-  let aux = new Node();
-  let valor, clase;
-  aux = lista.peekNode();
-  let long = lista.length();
-  for(i=0; i<long; i++){
-    clase = aux.getClass()
-    switch (clase){
-      case "Tipo":
-        aux = aux.getNext();
-        if(variable.includes(aux.getValue())){
-          aux.getNext();
-          if(separador.includes(aux.getValue()) && aux.getValue()==";"){
-            if(aux.next==null){
-              break;
-            }else{
-              console.log("Error, luego de ; no deben haber caracteres")
-            }
-          }else if(separador.includes(aux.getValue()) && aux.getValue()==","){
-            estadoS0()
-          }
-        }
-    }
-  }
-  return valor
-}
+* ESTADOS
 */
 
-
 function estadoS0(lista){
+  let listaAux = new LinkedList();
   let aux = new Node();
-  let valor;
+  let clase;
   aux = lista.peekNode();
   let long = lista.length();
-  for(i=0; i<long; i++){
-    valor = aux.getValue();
-    aux = aux.getNext(); 
-  }
-  return valor
-}
+  for(let i=0; i<long; i++){
+    if(aux == null){
+      break;  
+    }
+    clase = aux.getClass();
+    switch (clase){
+      //ESTADO S0
+      case "Tipo": 
+        aux = aux.getNext();
+        if(aux != null && aux.getClass() == "Variable"){
+          aux = aux.getNext();
+          if(aux != null && (aux.getClass() == "Separador") && aux.getValue()==";"){
+            if(aux.next==null){
+              return console.log("Linea correcta!")
+            }else{
+              return console.log("Error, luego de ; no deben haber caracteres")
+            }
+          }
+          //CREA NUEVA LISTA PARA PASAR AL ESTADO S1
+          else if(aux != null && (aux.getClass() == "Separador")){
+            while(aux != null){
+              listaAux.append(aux.getClass(),aux.getValue());
+              aux = aux.getNext();
+            }
+            estadoS0(listaAux);
+            break;
+          }
+          //CREA NUEVA LISTA PARA PASAR AL ESRADO S2
+          else if(aux != null && aux.getClass() == "Operador"){
+            while(aux != null){
+              listaAux.append(aux.getClass(), aux.getValue());
+              aux = aux.getNext();
+            }
+            estadoS0(listaAux); 
+            break;
+            
+          }else if(aux == null){
+            return console.log("Error, falta ;");
+          }
+        }else if(aux != null){
+          return console.log(`Error, despues de ${aux.getValue()} debe ir una variable.`);
+        }break;
 
- /***************************************************************************************************************** 
- * COMPROBAR QUE LA LINEA ESTÉ BIEN ESCRITA
+      //ESTADO S1 Y ESTADO S3  
+      case "Separador":
+        //ESTADO S1
+        if (aux != null && aux.getValue() == ","){
+          aux = aux.getNext();
+          if(aux != null && aux.getClass() == "Variable" ){
+            aux = aux.getNext();
+            if(aux != null && aux.getValue() == ","){
+              //CREA UNA LISTA PARA REGRESAR AL ESTADO S1
+              while(aux != null){
+                listaAux.append(aux.getClass(), aux.getValue());
+                aux = aux.getNext();
+              }
+              estadoS0(listaAux); 
+              break;
+            }else if(aux !=null && aux.getValue() == ";"){
+              if(aux.next == null){
+                return console.log("Linea correcta!")
+              }else{
+                return console.log("Error, luego de ; no pueden haber caracteres");
+              }
+            }else if(aux != null && aux.getClass() == "Operador"){
+              //CREA UNA LISTA PARA PASAR AL ESTADO S2
+              while(aux != null){
+                listaAux.append(aux.getClass(), aux.getValue());
+                aux = aux.getNext();
+              }
+              estadoS0(listaAux); 
+              break;
+            }else if(aux != null && aux.getClass() == "Tipo"){
+              return console.log(`Error, no puede haber un ${aux.getValue()} después de una variable`);
+            }else if(aux != null && aux.getClass() == "Cadena"){
+              return console.log("Error, no puede haber una cadena después de una variable.");
+            }else if (aux != null && aux.getClass() == "Separador"){
+              return console.log(`Error, no puede haber un ${aux.getValue()} después de una variable.`);
+            }else if(aux == null){
+              return console.log("Error, falta el ;");
+            }
+          }else if(aux != null){
+            return console.log("Error, después de , debe ir una variable.");
+          }else if(aux == null){
+            return console.log("Error, linea incompleta, debe seguir el nombre de la variable.");
+          }
+
+        }
+        //ESTADO S3
+        else if(aux != null && aux.getValue() == '"'){
+          aux = aux.getNext();
+          if(aux != null && aux.getClass() == "Cadena"){
+            aux = aux.getNext();
+            if(aux != null && aux.getValue() == '"'){
+              aux = aux.getNext();
+              if(aux != null && aux.getClass() == "Operador"){
+                aux = aux.getNext();
+                //CREA UNA NUEVA LISTA PARA PASAR AL ESTADO S4 (VERIFICAR SI ES TRUE || FALSE O UN NUMERO)
+                if(aux != null && aux.getClass() == "Cadena"){ //Puede que tengamos que crear un array de numeros.
+                  while(aux != null){
+                    listaAux.append(aux.getClass(), aux.getValue());
+                    aux = aux.getNext();
+                  }
+                  estadoS0(listaAux);
+                  break;
+                }else if(aux != null){
+                  return console.log(`Error, no puede haber un ${aux.getValue()} después de un operador`);
+                }
+              }else if(aux != null && aux.getValue() == ";"){
+                if(aux.next == null){
+                  return console.log("Linea correcta!");
+                }else if(aux != null){
+                  return console.log("Error, no puede haber ningún otro valor despues de ;");
+                }                
+              }else if(aux != null){
+                return console.log(`Error, no puede haber un ${aux.getValue()} después del segundo " `);
+              }
+            }else if(aux != null){
+              return console.log('Error, falta una "');
+            }else if (aux == null){
+              return console.log("Error, falta un ;");
+            }
+          }
+        }else if(aux != null){
+          return console.log(`Error, no se permite un ${aux.getValue()} en esa posición`);
+        }break;
+      
+      case "Operador":
+        //ESTADO S2
+        if( aux != null && aux.getValue() != "+" || aux.getValue() != "-" || aux.getValue() != "="){
+          console.log("Error, el operador no está permitido en esta posición.");
+          break;
+        }
+        else if(aux != null && (aux.getValue() == "+" || aux.getValue() == "-")){
+          aux = aux.getNext();
+          if(aux != null && aux.getValue() == "="){
+            aux = aux.getNext();
+            //CREAR LISTA PARA PASAR AL ESTADO S3
+            if(aux != null && aux.getValue() == '"'){
+              while(aux != null){
+                listaAux.append(aux.getClass(), aux.getValue());
+                aux = aux.getNext();
+              }
+              estadoS0(listaAux); 
+              break;
+            }else if(aux != null && aux.getClass() == "Variable"){ 
+              //CREAR LISTA PARA PASAR AL ESTADO S5
+              while(aux != null){
+                listaAux.append(aux.getClass(), aux.getValue());
+                aux = aux.getNext();
+              }
+              estadoS0(listaAux);
+              break;
+            }else if(aux != null && aux.getClass() == "Cadena"){
+              //CREAR LISTA PARA PASAR AL ESTADO S4
+              while(aux != null){
+                listaAux.append(aux.getClass(), aux.getValue());
+                aux = aux.getNext();
+              }
+              estadoS0(listaAux);
+              break;
+            }else if(aux != null){
+              return console.log(`Error, ${aux.getValue()} no está permitido después de un =`);
+            }
+          }
+          else if(aux != null){
+            return console.log(`Error, no puede haber un/a ${aux.getClass()} después de un + `);
+          }
+        }else if(aux != null && aux.getValue() == "="){
+          aux = aux.getNext();
+          if(aux != null && aux.getValue() == '"'){
+            //CREAR LISTA PARA PASAR AL ESTADO S3
+            while(aux != null){
+              listaAux.append(aux.getClass(), aux.getValue());
+              aux = aux.getNext();
+            }
+            estadoS0(listaAux); 
+            break;
+          }else if(aux != null && aux.getClass() == "Variable"){ 
+            //CREAR LISTA PARA PASARLA AL ESTADO S5
+            while(aux != null){
+              listaAux.append(aux.getClass(), aux.getValue());
+              aux = aux.getNext();
+            }
+            estadoS0(listaAux);
+            break;
+          }else if(aux != null && aux.getClass() == "Cadena"){ 
+            //CREAR LISTA PARA PASAR AL ESTADO S4
+            while(aux != null){
+              listaAux.append(aux.getClass(), aux.getValue());
+              aux = aux.getNext();
+            }
+            estadoS0(listaAux);
+            break;
+          }
+        }else if(aux != null){
+          return console.log(`Error, ${aux.getValue()} no está permitido despuése de un =`);
+        }break;
+
+      case "Cadena":
+        //ESTADO S4
+        if(aux != null && (aux.getValue() == "true" || aux.getValue() == "false")){
+          aux = aux.getNext();
+          if( aux != null && aux.getValue() == ";"){
+            if(aux.next == null){
+              return console.log("Linea correcta!");
+            }else if(aux != null){
+              return console.log("Error, despues del ';' no pueden haber más caracteres");
+            }
+          }else if(aux != null && aux.getClass() == "Operador"){
+            aux = aux.getNext();
+            if(aux != null && aux.getClass() == "Variable"){
+              //CREAR LISTA PARA PASAR AL ESTADO S5
+              while(aux != null){
+                listaAux.append(aux.getClass(), aux.getValue());
+                aux = aux.getNext();
+              }
+              estadoS0(listaAux);
+              break;
+            }else if(aux != null && aux.getClass() == "Cadena"){
+              while(aux != null){
+                listaAux.append(aux.getClass(), aux.getValue());
+                aux = aux.getNext();
+              }
+              estadoS0(listaAux);
+              break;
+            }
+          }else if(aux != null){
+            return console.log(`Error,${aux.getValue()} no está permitida en esa posición.`);
+          }
+        //Buscar expresión regular que acepte números.
+        }else if(aux != null){
+          return console.log("Error, cadena no permitida.");
+        }
+        break;
+
+        
+      //ESTADO S5
+      case "Variable":
+        aux = aux.getNext();
+        if(aux != null && aux.getClass() == "Operador"){
+          aux = aux.getNext();
+          if(aux != null && aux.getClass() == "Variable"){
+            //CREAR LISTA PARA PASAR AL ESTADO S5
+            while(aux != null){
+              listaAux.append(aux.getClass(), aux.getValue());
+              aux = aux.getNext();
+            }
+            estadoS0(listaAux);
+            break;
+          }else if(aux != null && aux.getClass()  == "Cadena"){
+            //CREAR LISTA PARA PASAR AL ESTADO S4
+            while(aux != null){
+              listaAux.append(aux.getClass(), aux.getValue());
+              aux = aux.getNext();
+            }
+            estadoS0(listaAux);
+            break;
+          }else if(aux != null && aux.getValue() == '"'){
+            //CREAR LISTA PARA PASAR AL ESTADO S3
+            while(aux != null){
+              listaAux.append(aux.getClass(), aux.getValue());
+              aux = aux.getNext();
+            }
+            estadoS0(listaAux);
+            break;
+          }else if(aux != null){
+            return console.log(`Error, ${aux.getValue()} no es permitido después de un operador.`);
+          }
+        }else if(aux != null && aux.getClass() == "Variable"){
+          aux = aux.getNext();
+          if(aux != null && (aux.getClass() == "Separador") && aux.getValue()==";"){
+            if(aux.next==null){
+              return console.log("Linea correcta!")
+            }else{
+              return console.log("Error, luego de ; no deben haber caracteres")
+            }
+          }
+          //CREA NUEVA LISTA PARA PASAR AL ESTADO S1
+          else if(aux != null && (aux.getClass() == "Separador")){
+            while(aux != null){
+              listaAux.append(aux.getClass(),aux.getValue());
+              aux = aux.getNext();
+            }
+            estadoS0(listaAux);
+            break;
+          }
+          //CREA NUEVA LISTA PARA PASAR AL ESRADO S2
+          else if(aux != null && aux.getClass() == "Operador"){
+            while(aux != null){
+              listaAux.append(aux.getClass(), aux.getValue());
+              aux = aux.getNext();
+            }
+            estadoS0(listaAux); 
+            break;
+            
+          }else if(aux == null){
+            return console.log("Error, falta ;");
+          }
+        }else if(aux != null && aux.getValue() == ";"){
+          if(aux.next == null){
+            return console.log("Linea correcta!");
+          }else{
+            return console.log("Error, despues del ';' no pueden haber más caracteres");
+          }
+        }else{
+          return console.log(`Error, valor no  permitido después de una variable`);
+        }break;
+    }       
+    
+  }
+}
+//console.log(estadoS0(nueva));
+
+
+
+/***************************************************************************************************************** 
+* COMPROBAR QUE LA LINEA ESTÉ BIEN ESCRITA
 */
 
 function comprobar(listaC){
   var listaComp = new LinkedList();
   listaComp = convertirLista(listaC);
-  let aux = new Node();
-  aux = listaComp.peekNode();
-  aux = aux.getNext()
-  aux = aux.getNext()
-  return convertirEnArray(aux)
-  //return estadoS0(listaComp); 
-  //console.log(listaComp)
+  console.log(listaComp);
   console.log(estadoS0(listaComp));
 }
-
